@@ -13,6 +13,8 @@ elevation="7" outlined  class="mx-auto question-card flex-wrap">
         <v-list-item
           v-for="(answer,index) in shuffledAnswers" :key="index"
           @click="selectAnswer(index)"
+          :class="[answered && correctIndex === index ? 'correct' : '',
+          answered && correctIndex != index ? 'incorrect' : '']"
           
 
         
@@ -27,6 +29,7 @@ elevation="7" outlined  class="mx-auto question-card flex-wrap">
         <v-card-actions><v-btn
         color="primary" 
         @click="submitAnswer"
+        :disabled="selectedAnswerIndex === null || answered"
 >Submit</v-btn> <v-btn color="secondary" @click="next">Next</v-btn></v-card-actions>
     </v-card>
 
@@ -47,7 +50,9 @@ export default {
             return {
                 selectedAnswerIndex:null,
                 shuffledAnswers:[],
-                isCorrect:false
+                isCorrect:false,
+                answered:false,
+                correctIndex:null
             }
         },
         computed:{
@@ -65,6 +70,7 @@ export default {
             immediate:true,
             handler() {
             this.selectedAnswerIndex=null 
+            this.answered=false
              this.shuffleAnswers()
 
             }
@@ -78,11 +84,14 @@ export default {
             shuffleAnswers(){
                 let answers = [...this.currentQuestion.incorrect_answers, this.currentQuestion.correct_answer]
                 this.shuffledAnswers = shuffle(answers)
+                this.correctIndex= this.shuffledAnswers.indexOf(this.currentQuestion.correct_answer)
+
             },
             submitAnswer(){
                 this.selectedAnswerIndex === this.shuffledAnswers.indexOf(this.currentQuestion.correct_answer)
  ? this.isCorrect = true : this.isCorrect=false
                 this.increment(this.isCorrect)
+                this.answered=true
             },
         },
         mounted() {
@@ -96,10 +105,10 @@ export default {
 }
 
 .correct {
-    background-color: rgb(32, 209, 32);
+    background-color: rgb(26, 145, 65);
 }
 .incorrect{
-    background-color: rgb(180, 58, 58);
+    background-color: rgb(228, 20, 20);
 }
 
 
