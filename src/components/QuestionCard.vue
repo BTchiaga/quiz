@@ -13,8 +13,7 @@ elevation="7" outlined  class="mx-auto question-card flex-wrap">
         <v-list-item
           v-for="(answer,index) in shuffledAnswers" :key="index"
           @click="selectAnswer(index)"
-          :class="[answered && correctIndex === index ? 'correct' : '',
-          answered && selectedAnswerIndex === index && correctIndex != index ? 'incorrect' : '']"
+          :class="responsesClass(index)"
           
 
         
@@ -93,6 +92,15 @@ export default {
                 this.increment(this.isCorrect)
                 this.answered=true
             },
+            responsesClass(index){
+                let responseClass= ''
+            if(this.answered && this.correctIndex === index ) {
+            responseClass= 'correct'}
+            else if( this.answered &&
+this.selectedAnswerIndex === index && this.correctIndex != index) {
+responseClass= 'incorrect' }
+return responseClass
+            }
         },
         mounted() {
             this.shuffleAnswers()
