@@ -14,7 +14,7 @@ elevation="7" outlined  class="mx-auto question-card flex-wrap">
           v-for="(answer,index) in shuffledAnswers" :key="index"
           @click="selectAnswer(index)"
           :class="[answered && correctIndex === index ? 'correct' : '',
-          answered && correctIndex != index ? 'incorrect' : '']"
+          answered && selectedAnswerIndex === index && correctIndex != index ? 'incorrect' : '']"
           
 
         
